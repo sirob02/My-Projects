@@ -6,33 +6,38 @@
  */ 
 
 #include<iostream>
-#include"lib/board.h"
 #include"lib/manager.h"
+
 using namespace std;
 
 int main(){
 
+    //Var
     char *playerName = new char;
+    char startGame;
 
+    //greetings
     cout << "Hello there, \nthis is a TicTacToe game \n" << "Whats your name? \n";       
     cin >> playerName;
+    cout << "yes   y\nno    n\nFirst Move? ";
+    cin >> startGame;
 
-    //create classes
-    board *newBoard = new board(playerName);
-    manager *newManager = new manager();
-    
-    system("clear");
-    cout << "OK "<< newBoard->getPlayerName() << " let's get started...\n\n\n";
-    
-    while(true){
-        newBoard->printField();
-        newManager->readInput(newBoard);
+    while(startGame != 'y' && startGame != 'n'){
         system("clear");
+        cout << "\nyes   y\nno    n\nFirst Move? ";
+        cin >> startGame;
+    }
+    system("clear");
+    cout << "OK "<< playerName << " let's get started...\n\n\n";
+    
+
+    //create Manager
+    manager *newManager = new manager(playerName,startGame);
+
+    while (true){
+        newManager->startGame();
     }
     
-    
-    //garbage collection
-    delete playerName;
 
     return 0;
 }

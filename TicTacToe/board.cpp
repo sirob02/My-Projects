@@ -2,14 +2,16 @@
 #include "lib/board.h"
 using namespace std;
 
-board::board(char *playername){
-    board::playername = playername;
-    cleanBoard();
+board::board(){
+    field = new char*[3];
+    for (int i = 0; i < 3; i++){
+        field[i] = new char[3];
+        for (int j = 0; j < 3; j++){
+            field[i][j]='.';
+        }
+    }
 }
 
-char* board::getPlayerName(){
-    return playername;
-}
 
 void board::cleanBoard(){
     for (int i = 0; i < 3; i++){
@@ -19,29 +21,55 @@ void board::cleanBoard(){
     }
 }
 
-board::~board(){
-    delete []playername;
+//@return a two dima
+char** board::getBoard(){ 
+    char **tmp = new char*[3];
+    for (int i = 0; i < 3; i++){
+        tmp[i] = new char[3];
+        for (int j = 0; j < 3; j++){
+            tmp[i][j]=this->field[i][j];
+        }
+    }
+    return tmp;
 }
 
-void board::isFinished(){
+//check if the game is over
+bool board::isFinished(){
     // ---
-    if( (field[0][0] == field[1][0])  &&  (field[0][0] == field[2][0]) ){  finishScreen(field[2][0]);}
-    if( (field[0][1] == field[1][1])  &&  (field[0][1] == field[2][1]) ){  finishScreen(field[2][1]);}
-    if( (field[0][2] == field[1][2])  &&  (field[0][2] == field[2][2]) ){  finishScreen(field[2][2]);}
+    if( (field[0][0] == field[1][0])  &&  (field[0][0] == field[2][0]) ){  if(field[2][0]!='.'){return true;}}
+    if( (field[0][1] == field[1][1])  &&  (field[0][1] == field[2][1]) ){  if(field[2][1]!='.'){return true;}}
+    if( (field[0][2] == field[1][2])  &&  (field[0][2] == field[2][2]) ){  if(field[2][2]!='.'){return true;}}
     // |||
-    if( (field[0][0] == field[0][1])  &&  (field[0][0] == field[0][2]) ){  finishScreen(field[0][2]);}
-    if( (field[1][0] == field[1][1])  &&  (field[1][0] == field[1][2]) ){  finishScreen(field[1][2]);}
-    if( (field[2][0] == field[2][1])  &&  (field[2][0] == field[2][2]) ){  finishScreen(field[2][2]);}
+    if( (field[0][0] == field[0][1])  &&  (field[0][0] == field[0][2]) ){  if(field[0][2]!='.'){return true;}}
+    if( (field[1][0] == field[1][1])  &&  (field[1][0] == field[1][2]) ){  if(field[1][2]!='.'){return true;}}
+    if( (field[2][0] == field[2][1])  &&  (field[2][0] == field[2][2]) ){  if(field[2][2]!='.'){return true;}}
     // /
-    if( (field[2][2] == field[1][1])  &&  (field[2][2] == field[0][2]) ){  finishScreen(field[0][2]);}
+    if( (field[0][2] == field[1][1])  &&  (field[0][2] == field[2][0]) ){  if(field[0][2]!='.'){return true;}}
     // 
-    if( (field[0][0] == field[1][1])  &&  (field[0][0] == field[2][0]) ){  finishScreen(field[2][0]);}
+    if( (field[0][0] == field[1][1])  &&  (field[0][0] == field[2][2]) ){  if(field[2][2]!='.'){return true;}}
+    return false;
+}    
+
+//apply move
+// 0 = row 
+// 1 = colum
+void board::doMove(int* move,char token){
+    
+    if (token == 'X'){
+        cout <<"Player set row: " << (char)move[0]+65 << " and colum: "<< move[1]+1 << "\n";
+    }else{
+        cout <<"AI set row: " << (char)move[0]+65 << " and colum: "<< move[1]+1 << "\n";
+    }
+
+    field[move[1]][move[0]]=token;
+    
 }
 
-void board::finishScreen(char winner){
-    system("clear");
-    cout << "the winner is:  "<< winner;
-    cout << "end:   e\nnew:   n\n";
+bool board::isFree(int* pos){
+    if (field[pos[1]][pos[0]] == '.'){
+        return true;
+    }
+    return false;
 }
 
 void board::printField(){
@@ -64,10 +92,10 @@ void board::printField(){
                 continue;
             }
             if( i == 3 ){
-                cout << " "<< field[0][i-1] << " \n";
+                cout << " "<< field[i-1][0] << " \n";
                 continue;
             }
-            cout << " "<< field[0][i-1] << " |";
+            cout << " "<< field[i-1][0]  << " |";
             
     }
     //third Line
@@ -77,10 +105,10 @@ void board::printField(){
                 continue;
             }
             if( i == 3 ){
-                cout << " "<< field[1][i-1] << " \n";
+                cout << " "<< field[i-1][1] << " \n";
                 continue;
             }
-            cout << " "<< field[1][i-1] << " |";
+            cout << " "<< field[i-1][1] << " |";
             
     }
     //fourth Line
@@ -90,16 +118,11 @@ void board::printField(){
                 continue;
             }
             if( i == 3 ){
-                cout << " "<< field[1][i-1] << " \n";
+                cout << " "<< field[i-1][2] << " \n";
                 continue;
             }
-            cout << " "<< field[1][i-1] << " |";
+            cout << " "<< field[i-1][2] << " |";
             
     }
     cout << "\n";
-
-    //description
-    cout << "end:   e\nnew:   n\nplay:  p\n";
-    
-      
 }

@@ -1,20 +1,21 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+
 class board{
     
     private:
-        char field[3][3];
-        char *playername;
-        void finishScreen(char winner);
+        char** field;
+        
     public:
-        board(char *playername);
-        void showBoard();
-        char *getPlayerName();
-        void cleanBoard();
+        board();
+        void doMove(int* move,char token); 
+        bool isFinished();
         void printField();
-        void isFinished();
-        ~board();
+        char** getBoard();
+        void cleanBoard();
+        bool isFree(int *pos);
+
 };
 
 #endif

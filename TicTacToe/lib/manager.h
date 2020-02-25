@@ -2,13 +2,23 @@
 #define MANAGER_H
 
 #include "board.h"
+#include "tictactoe_Ai.h"
 class manager{
     
-    //private:
+    private:
+        board *newBoard = new board();
+        TicTacToe_Ai * Ai = new TicTacToe_Ai();
+        bool playerMove = false;
+        const char* playerName;
+        char readInput();
+        int* readUserInputMove();
+        void askForMove();
+        void description();
+
         
     public:
-        void readInput(board *newBoard);
-        
+        manager(const char* playerName, char playerStart);
+        void startGame();
 };
 
 #endif
