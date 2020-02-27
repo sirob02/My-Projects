@@ -3,7 +3,7 @@
 #include <arpa/inet.h> 
 #include <unistd.h> 
 #include <string.h> 
-#define PORT 43210
+#define PORT 80
 
 int main() { 
     int socketDescriptor = 0;
