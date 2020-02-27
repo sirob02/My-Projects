@@ -7,7 +7,7 @@
 #define PORT 43210
 
 
-
+//
 int main(){
 
     int serverFileDescriptor, new_socket, valread; 
@@ -59,7 +59,7 @@ int main(){
     
     
     //output mesage
-    printf("%s\n",buffer ); 
+    printf("%s\n",buffer );
     
     //sending server messege
     send(new_socket , hello , strlen(hello) , 0 ); 
